@@ -33,7 +33,6 @@ class ReceiptQueue {
         if (!queue.isEmpty()) {
             Purchase nextPurchase = queue.poll();
             System.out.println("\nReceipt: " + nextPurchase);
-            queue.add(nextPurchase);
             totalBill -= nextPurchase.price;
         } else {
             System.out.println("\nNo purchases in the queue.");
@@ -62,14 +61,15 @@ public class receiptGenerationSimulator {
         ReceiptQueue receiptQueue = new ReceiptQueue();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Welcome to the Receipt Generation Simulator!");
-
         while (true) {
-            System.out.println("\nChoose an option:");
-            System.out.println("[1] Add Purchase");
-            System.out.println("[2] Generate Receipt");
-            System.out.println("[3] Display Receipt Queue");
-            System.out.println("[4] Exit");
+        	System.out.println("\n+------------------------------+");
+        	System.out.println("| RECEIPT GENERATION SIMULATOR |");
+        	System.out.println("+------------------------------+");
+            System.out.println("| [1] Add Purchase             |");
+            System.out.println("| [2] Generate Receipt         |");
+            System.out.println("| [3] Display Receipt Queue    |");
+            System.out.println("| [4] Exit                     |");
+            System.out.println("+------------------------------+\n");
 
             System.out.print("Enter your choice: ");
             int choice;
@@ -83,11 +83,20 @@ public class receiptGenerationSimulator {
 
             switch (choice) {
                 case 1:
-                    System.out.print("\nEnter the item name: ");
+                	System.out.print("\nEnter the item name: ");
                     String itemName = scanner.nextLine();
-                    System.out.print("Enter the item price: ");
-                    double itemPrice = scanner.nextDouble();
-                    scanner.nextLine(); // Consume newline
+                    double itemPrice = 0.0;
+
+                    while (true) {
+                        System.out.print("Enter the item price: ");
+                        try {
+                            itemPrice = Double.parseDouble(scanner.nextLine());
+                            break; // Exit the loop if a valid price is entered
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input for item price. Please enter a valid numeric price.\n");
+                        }
+                    }
+
                     Purchase purchase = new Purchase(itemName, itemPrice);
                     receiptQueue.addPurchase(purchase);
                     System.out.println("\nPurchase added: " + purchase);
